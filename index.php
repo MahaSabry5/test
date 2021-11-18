@@ -50,6 +50,20 @@ require 'dbConnect.php';
 //LEFT  JOIN employee as super ON e.superssn = super.ssn
 //INNER JOIN employee as mgr ON d.mgrssn = mgr.ssn";
         //with work_hours + department_mangers views
+        $view1="CREATE VIEW IF NOT EXISTS work_hours
+            AS
+            SELECT employee.ssn,CONCAT(employee.fname ,' ', employee.lname) as name , project.pname,works_on.hours
+            FROM employee,project,works_on
+            WHERE works_on.essn=employee.ssn AND works_on.pno = project.pnumber";
+        $conn->query($view1);
+
+        $view2="CREATE VIEW IF NOT EXISTS department_mangers
+            AS
+            SELECT department.dname,department.dnumber,department.mgrssn,employee.fname
+            FROM employee,department
+            WHERE department.mgrssn=employee.ssn";
+        $conn->query($view2);
+
         $sql="SELECT  work_hours.name, work_hours.ssn , e.bdate ,super.fname as supervisor, department_mangers.dname ,  department_mangers.fname as dep_manage , work_hours.pname,work_hours.hours
 FROM employee as e
 INNER JOIN work_hours
