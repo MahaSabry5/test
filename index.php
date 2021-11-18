@@ -37,7 +37,7 @@ require 'dbConnect.php';
 FROM employee as e 
 LEFT OUTER JOIN department as d ON e.dno = d.dnumber 
 LEFT OUTER JOIN works_on ON works_on.essn = e.ssn 
-LEFT JOIN employee as super ON e.superssn = super.ssn 
+LEFT OUTER JOIN employee as super ON e.superssn = super.ssn 
 INNER JOIN project ON works_on.pno = project.pnumber
 INNER JOIN employee as mgr
 on d.mgrssn = mgr.ssn";
