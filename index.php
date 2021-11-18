@@ -33,14 +33,20 @@ require 'dbConnect.php';
 //LEFT OUTER JOIN wp_comments
 //ON wp_posts.ID = wp_comments.comment_post_ID
 //";
-        $sql = "SELECT  CONCAT(e.fname ,' ', e.lname) as name , e.ssn , e.bdate ,super.fname as supervisor, d.dname , d.mgrssn, mgr.fname as dep_manage,works_on.pno,project.pname,works_on.hours 
+//        $sql = "SELECT  CONCAT(e.fname ,' ', e.lname) as name , e.ssn , e.bdate ,super.fname as supervisor, d.dname , d.mgrssn, mgr.fname as dep_manage,works_on.pno,project.pname,works_on.hours
+//FROM employee as e
+//LEFT OUTER JOIN department as d ON e.dno = d.dnumber
+//LEFT OUTER JOIN works_on ON works_on.essn = e.ssn
+//LEFT  JOIN employee as super ON e.superssn = super.ssn
+//INNER JOIN project ON works_on.pno = project.pnumber
+//INNER JOIN employee as mgr
+//on d.mgrssn = mgr.ssn";
+        $sql="SELECT  work_hours.name, e.ssn , e.bdate ,super.fname as supervisor, d.dname , d.mgrssn, mgr.fname as dep_manage , work_hours.pname,work_hours.hours
 FROM employee as e 
+INNER JOIN work_hours ON work_hours.ssn=e.ssn
 LEFT OUTER JOIN department as d ON e.dno = d.dnumber 
-LEFT OUTER JOIN works_on ON works_on.essn = e.ssn 
-LEFT OUTER JOIN employee as super ON e.superssn = super.ssn 
-INNER JOIN project ON works_on.pno = project.pnumber
-INNER JOIN employee as mgr
-on d.mgrssn = mgr.ssn";
+LEFT  JOIN employee as super ON e.superssn = super.ssn 
+INNER JOIN employee as mgr ON d.mgrssn = mgr.ssn";
         $records = $conn->query($sql);
 
         while($row = $records->fetch_assoc()) {  ?>
